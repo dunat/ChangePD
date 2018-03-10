@@ -31,7 +31,7 @@ public class ChangePD {
                         c.meanShift(l.get(i));
                         List<Time_series> liste = new ArrayList<>();
                         //creo i bootstrap per ogni serie
-                        liste = c.bootstrapping(l.get(i), 10);
+                        liste = c.bootstrapping(l.get(i), 1000);
                         liste_campione.add(liste);
                     }
                     

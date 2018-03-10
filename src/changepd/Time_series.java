@@ -64,7 +64,7 @@ public class Time_series {
     
     @Override
     public String toString() {
-        return "Time_series{" + "word=" + word + ", ind=" + ind + ",\n val=" + val + ",\n val_norm=" + val_norm + ",\n mean_shift=" + mean_shift + ",\n pvalue=" + pvalue + '}';
+        return "Time_series{" + "word=" + word + ", ind=" + ind + ",\n val=" + val + ",\n val_norm=" + val_norm + ",\n mean_shift=" + mean_shift + ",\n pvalue=" + pvalue + '}'+"\n";
     }
     
 }
