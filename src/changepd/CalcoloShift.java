@@ -64,6 +64,10 @@ public class CalcoloShift {
         return list;        
     }
     
+    /**
+     * normalizzo la serie
+     * @param l serie
+     */
     void normalize(List<Time_series> l){
         int num_termini = l.size();
         int lung_serie = l.get(0).getVal().size();
@@ -90,6 +94,7 @@ public class CalcoloShift {
             sum = 0;
         }
         
+        //calcolo la z score
         for(int k = 0; k < num_termini; k++){
             List<Double> val_norm = new ArrayList<>();
             for(int y = 0; y < lung_serie; y++){
@@ -107,7 +112,11 @@ public class CalcoloShift {
             l.get(i).set_val_norm(l.get(i).getVal());
         }
     }
-    
+   
+    /**
+     * calcolo la mean shift di una serie
+     * @param t serie
+     */
     public void meanShift(Time_series t) {
         
         double sum_pre_j = 0;
@@ -134,6 +143,12 @@ public class CalcoloShift {
         
     }
     
+    /**
+     * calcolo i bootstrap di una serie
+     * @param t serie
+     * @param num_bs numero campioni
+     * @return lista di campioni
+     */
     public List<Time_series> bootstrapping(Time_series t, int num_bs) {
         List<Time_series> bs = new ArrayList<>();
 
@@ -150,6 +165,11 @@ public class CalcoloShift {
         return bs;
     }
 
+    /**
+     * calcolo i pvalue di una serie
+     * @param t serie
+     * @param samples campioni di bootstrap 
+     */
     public void computePValue(Time_series t, List<Time_series> samples) {
         int bootstrap = samples.size();
         int cont = 0;
