@@ -50,17 +50,23 @@ public class CalcoloShift {
             // build time series
             List<Double> values = new ArrayList<>();
             
-            System.out.println(word[1]);
+            System.out.println(word[0]+","+word[1]);
             for (int i = 2; i < word.length; i++) {
 
                 values.add(Double.parseDouble(word[i]));
 
             }
-            Time_series t = new Time_series(Integer.parseInt(word[0]),word[1],values);
-            list.add(t);
+            try {
+                Time_series t = new Time_series(Integer.parseInt(word[0]),word[1],values);
+                list.add(t);
+            } catch (NumberFormatException e){
+                //do nothing
+            }
 
         }
         br.close();
+        System.out.println("File caricato.");
+        
         return list;        
     }
     
@@ -69,6 +75,8 @@ public class CalcoloShift {
      * @param l serie
      */
     void normalize(List<Time_series> l){
+        System.out.println("Normalizzazione in corso...");
+        
         int num_termini = l.size();
         int lung_serie = l.get(0).getVal().size();
         double sum = 0;
@@ -90,7 +98,7 @@ public class CalcoloShift {
 
                sum = sum + ((l.get(i).getVal().get(j) - medie.get(j))*(l.get(i).getVal().get(j) - medie.get(j)));
             }
-            varianze.add(Math.sqrt(sum/num_termini));
+            varianze.add(Math.sqrt(sum/(num_termini-1)));
             sum = 0;
         }
         
@@ -111,6 +119,41 @@ public class CalcoloShift {
         for(int i = 0; i < l.size(); i++){
             l.get(i).set_val_norm(l.get(i).getVal());
         }
+    }
+    
+    /**
+     * metodo che filtra gli hashtag piu' frequenti
+     */
+    ArrayList<Time_series> filtra_hashtag(String f, List<Time_series> l) throws FileNotFoundException, IOException{
+        System.out.println("Sto filtrando gli hashtag piu frequenti...");
+        BufferedReader br = new BufferedReader(new FileReader(f));
+        String line;
+        ArrayList<String> parole_freq = new ArrayList<>();
+        ArrayList<Time_series> lt = new ArrayList<>();
+        //skip first line
+        if (br.ready()) {
+            br.readLine();
+        }
+        while (br.ready()) {
+            line = br.readLine();
+            // split values
+            String[] word = line.split(",");
+            parole_freq.add(word[1]);     
+        }
+        br.close();
+        for(int i = 0; i < l.size(); i++){
+            //boolean flag = false;
+            for(int j = 0; j < parole_freq.size(); j++){
+                if(l.get(i).getWord().equals(parole_freq.get(j))){
+                    //flag = true;
+                    Time_series t = l.get(i);
+                    lt.add(t);
+                }
+              
+            }
+            
+        }
+        return lt;
     }
    
     /**
@@ -150,6 +193,7 @@ public class CalcoloShift {
      * @return lista di campioni
      */
     public List<Time_series> bootstrapping(Time_series t, int num_bs) {
+        
         List<Time_series> bs = new ArrayList<>();
 
         for (int i = 0; i < num_bs; i++) {
@@ -171,6 +215,7 @@ public class CalcoloShift {
      * @param samples campioni di bootstrap 
      */
     public void computePValue(Time_series t, List<Time_series> samples) {
+       
         int bootstrap = samples.size();
         int cont = 0;
         List<Double> pvalue = new ArrayList<>();
@@ -182,8 +227,10 @@ public class CalcoloShift {
                     cont++;
                 }
             }
+           
             double va = (double)cont/bootstrap; 
             pvalue.add(va);
+            
             cont = 0;      
         }
         t.set_pvalue(pvalue);

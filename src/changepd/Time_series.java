@@ -42,6 +42,10 @@ public class Time_series {
         return val_norm;
     }
     
+    public List<Double> get_pvalue(){
+        return pvalue;
+    }
+    
     public void set_val_norm(List<Double> l){
         this.val_norm = l;
     }
