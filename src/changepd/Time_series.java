@@ -1,15 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package changepd;
 
 import java.util.List;
 
 /**
- *
- * @author rodman
+ *  Classe che implementa una serie temporale
+ * @author Donato Aquilino
  */
 public class Time_series {
     

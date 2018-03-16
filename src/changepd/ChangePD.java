@@ -12,22 +12,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author rodman
+ * Classe che richiama i metodi per calcolare la CPD di una serie
+ * @author Donato Aquilino
  */
 public class ChangePD {
 
     /**
      * @param args the command line arguments
+     * @arg[0] file di input 
+     * @arg[1] hashtag da filtrare
+     * @args[2] file di output
      * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException {
                     CalcoloShift c = new CalcoloShift();
                     //carico il file
-                    List<Time_series> li = c.load("/home/rodman/Scrivania/Sperimentazione_twitter/twita_tri_cum.csv");
+                    List<Time_series> li = c.load(args[0]);
                     //normalizzo le serie
                     c.normalize(li);
-                    ArrayList<Time_series> l = c.filtra_hashtag("/home/rodman/Scrivania/Sperimentazione_twitter/11012018_esecuzione_twitter/hash_piu_frequenti.csv", li);
+                    ArrayList<Time_series> l = c.filtra_hashtag(args[1], li);
                     li.clear();
                     
                     System.out.println("Permutazioni delle serie...");
@@ -57,7 +60,7 @@ public class ChangePD {
                         c.computePValue(l.get(i), liste_campione.get(i));
                     }
                     
-                    BufferedWriter w = new BufferedWriter(new FileWriter("/home/rodman/Scrivania/Sperimentazione_twitter/032018_twitter/pvalue_cum.csv"));
+                    BufferedWriter w = new BufferedWriter(new FileWriter(args[2]));
                     for(int i = 0; i < l.size(); i++){
                         
                         w.write(String.valueOf(l.get(i).getInd()));

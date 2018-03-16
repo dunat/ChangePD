@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package changepd;
 
 import java.io.BufferedReader;
@@ -15,8 +10,8 @@ import java.util.List;
 
 
 /**
- *
- * @author rodman
+ * Classe che fornisce i metodi per effettuare la change point detection
+ * @author Donato Aquilino
  */
 public class CalcoloShift {
     
@@ -60,7 +55,7 @@ public class CalcoloShift {
                 Time_series t = new Time_series(Integer.parseInt(word[0]),word[1],values);
                 list.add(t);
             } catch (NumberFormatException e){
-                //do nothing
+                
             }
 
         }
@@ -115,7 +110,11 @@ public class CalcoloShift {
         
     }
     
-    void normalize2(List<Time_series> l){
+    /**
+     * Metodo che ricopia i valori senza normalizzarli
+     * @param l lista di time series
+     */
+    void avoid_normalization(List<Time_series> l){
         for(int i = 0; i < l.size(); i++){
             l.get(i).set_val_norm(l.get(i).getVal());
         }
@@ -123,6 +122,8 @@ public class CalcoloShift {
     
     /**
      * metodo che filtra gli hashtag piu' frequenti
+     * @param f hashtag
+     * @param l lista delle time series
      */
     ArrayList<Time_series> filtra_hashtag(String f, List<Time_series> l) throws FileNotFoundException, IOException{
         System.out.println("Sto filtrando gli hashtag piu frequenti...");
@@ -138,7 +139,7 @@ public class CalcoloShift {
             line = br.readLine();
             // split values
             String[] word = line.split(",");
-            parole_freq.add(word[1]);     
+            parole_freq.add(word[0]);     
         }
         br.close();
         for(int i = 0; i < l.size(); i++){
